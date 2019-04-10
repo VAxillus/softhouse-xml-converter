@@ -21,7 +21,7 @@ scopeStack = []
 def encapsulateFieldWithXMLTags(field, xml):
     return xml[0] + field + xml[1]
 
-def encapsulateScopedXMLTags(arr, xml):
+def encapsulateArrayWithXMLTags(arr, xml):
     return [xml[0]] + arr + [xml[1]]
 
 def openXMLTag(arr, xml):
@@ -35,7 +35,7 @@ def createXMLTags(line):
     xml = list(map(encapsulateFieldWithXMLTags, line[1:], tags[key]))
 
     if scopeLevel[key] == None:
-        xml = encapsulateScopedXMLTags(xml, scopedTags[key])
+        xml = encapsulateArrayWithXMLTags(xml, scopedTags[key])
     else:
         xml = openXMLTag(xml, scopedTags[key])
         if scopeStack:
