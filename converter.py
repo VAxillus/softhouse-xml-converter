@@ -30,14 +30,18 @@ def openXMLTag(arr, xml):
 def closeXMLTag(arr, xml):
     return [xml[1]] + arr
 
-def closePreviousScope(xml, key):
+def closePreviousScope(xml, key, xmlToPrepend=None):
+    if xmlToPrepend==None:
+        xmlToPrepend = []
+
     for previousScope in scopeLevel[scopeStack[-1]]:
         if previousScope == key and scopeStack:
-            xml = closeXMLTag(xml, scopedTags[scopeStack[-1]])
+            xmlToPrepend.append(scopedTags[scopeStack[-1]][1])
             scopeStack.pop()
             if scopeStack and previousScope in scopeLevel[scopeStack[-1]]:
-                xml = closePreviousScope(xml, key)
-    return xml
+                closePreviousScope(xml, key, xmlToPrepend)
+
+    return xmlToPrepend + xml
 
 def createXMLTags(line):
     key = line[0]
@@ -51,8 +55,6 @@ def createXMLTags(line):
             xml = closePreviousScope(xml, key)
         scopeStack.append(key)
 
-    if xml[0][1] == '/' and xml[1][1] == '/':
-        xml[0], xml[1] = xml[1], xml[0]
     return xml
 
 def main(argv):
