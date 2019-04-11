@@ -31,7 +31,7 @@ def closeXMLTag(arr, xml):
     return [xml[1]] + arr
 
 def closePreviousScope(xml, key, xmlToPrepend=None):
-    if xmlToPrepend==None:
+    if xmlToPrepend == None:
         xmlToPrepend = []
 
     for previousScope in scopeLevel[scopeStack[-1]]:
@@ -66,17 +66,17 @@ def main(argv):
     indentation = 4
     spaces = ' ' * indentation
 
-    with open(argv[1], 'w') as f:
-        f.write('<people>\n')
+    with open(argv[1], 'w') as file:
+        file.write('<people>\n')
         for lines in xml:
             for tag in lines:
                 if tag[1] == '/':
                     spaces = spaces[indentation:]
-                f.writelines(spaces + '%s\n' % tag)
+                file.writelines(spaces + '%s\n' % tag)
                 if tag.find('/') == -1:
                     spaces += ' ' * indentation
-        f.write('</people>\n')
-    f.close()
+        file.write('</people>\n')
+    file.close()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
